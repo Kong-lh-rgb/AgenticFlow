@@ -89,7 +89,7 @@
       <workItem from="1762742030841" duration="15419000" />
       <workItem from="1762830308173" duration="7068000" />
       <workItem from="1762840800864" duration="682000" />
-      <workItem from="1762924431149" duration="4841000" />
+      <workItem from="1762924431149" duration="7497000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -115,7 +115,31 @@
       <option name="project" value="LOCAL" />
       <updated>1763041763262</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="完成基本框架">
+      <option name="closed" value="true" />
+      <created>1763042228888</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1763042228888</updated>
+    </task>
+    <task id="LOCAL-00005" summary="完成基本框架">
+      <option name="closed" value="true" />
+      <created>1763042246286</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1763042246286</updated>
+    </task>
+    <task id="LOCAL-00006" summary="修改调用格式">
+      <option name="closed" value="true" />
+      <created>1763044498311</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1763044498311</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -135,7 +159,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test" />
     <MESSAGE value="完成基本框架" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成基本框架" />
+    <MESSAGE value="修改调用格式" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改调用格式" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/AgenticFlow$content_graph.coverage" NAME="content_graph Coverage Results" MODIFIED="1762757703280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/graph" />

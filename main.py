@@ -1,7 +1,7 @@
 from graph.content_graph import State
 from langgraph.graph import END,START,StateGraph
-from agent.writen_agent import writen_node
-from agent.critic_agent import review_node
+from agent.writen_node import writen_node
+from agent.critic_node import review_node
 
 
 def route_function(state:State):

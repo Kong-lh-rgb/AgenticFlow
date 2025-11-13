@@ -6,23 +6,12 @@ import re
 # from langchain.agents.middleware import dynamic_prompt, ModelRequest
 # from llm.llm_provider import easy_llm
 # from tools.search_tool import search_tool
+# from prompts.prompt import research_prompt
 from graph.content_graph import State
 #
 # @dataclass
 # class ResearchContext:
 #     topic: str
-#
-# @dynamic_prompt
-# def research_prompt(request: ModelRequest) -> str:
-#     topic = request.runtime.context.topic
-#     return (
-#         "你是一个勤奋的研究助理。"
-#         f"你的任务是根据提供的主题：{topic}，"
-#         "利用可用的资料进行深入研究，"
-#         "并总结出有价值的见解和信息，"
-#         "以支持研究报告的撰写。"
-#     )
-#
 #
 # def research_node(state: State):
 #     """执行研究任务"""
