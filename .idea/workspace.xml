@@ -4,22 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e1097468-4cc2-478d-9a5e-b0b33443ed3c" name="Changes" comment="test">
-      <change afterPath="$PROJECT_DIR$/agent/analyst_Agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agent/critic_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agent/indexing.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agent/research_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agent/writen_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/graph/clone_graph.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/graph/content_graph.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/llm/llm_provider.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prompts/prompt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tools/find_answer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tools/search_tool.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graph/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-    </list>
+    <list default="true" id="e1097468-4cc2-478d-9a5e-b0b33443ed3c" name="Changes" comment="完成基本框架" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -56,26 +41,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.content_graph.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.research_agent.executor&quot;: &quot;Run&quot;,
-    &quot;Python.search_tool.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.writen_agent.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/pyproject/PythonProject5&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.content_graph.executor": "Run",
+    "Python.indexing.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.research_agent.executor": "Run",
+    "Python.search_tool.executor": "Run",
+    "Python.test.executor": "Run",
+    "Python.writen_agent.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "D:/pyproject/PythonProject5",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "GitStage.ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
+    ]
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -96,7 +89,7 @@
       <workItem from="1762742030841" duration="15419000" />
       <workItem from="1762830308173" duration="7068000" />
       <workItem from="1762840800864" duration="682000" />
-      <workItem from="1762924431149" duration="2179000" />
+      <workItem from="1762924431149" duration="4841000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -106,15 +99,43 @@
       <option name="project" value="LOCAL" />
       <updated>1762495518520</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="完成基本框架">
+      <option name="closed" value="true" />
+      <created>1763041690670</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1763041690670</updated>
+    </task>
+    <task id="LOCAL-00003" summary="完成基本框架">
+      <option name="closed" value="true" />
+      <created>1763041763262</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1763041763262</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test" />
-    <option name="LAST_COMMIT_MESSAGE" value="test" />
+    <MESSAGE value="完成基本框架" />
+    <option name="LAST_COMMIT_MESSAGE" value="完成基本框架" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/AgenticFlow$content_graph.coverage" NAME="content_graph Coverage Results" MODIFIED="1762757703280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/graph" />
@@ -122,6 +143,7 @@
     <SUITE FILE_PATH="coverage/AgenticFlow$test.coverage" NAME="test Coverage Results" MODIFIED="1762840876189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/agent" />
     <SUITE FILE_PATH="coverage/AgenticFlow$main.coverage" NAME="main Coverage Results" MODIFIED="1762765718191" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AgenticFlow$research_agent.coverage" NAME="research_agent Coverage Results" MODIFIED="1762837029032" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/agent" />
+    <SUITE FILE_PATH="coverage/AgenticFlow$indexing.coverage" NAME="indexing Coverage Results" MODIFIED="1762935020806" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/agent" />
     <SUITE FILE_PATH="coverage/AgenticFlow$writen_agent.coverage" NAME="writen_agent Coverage Results" MODIFIED="1762767776765" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/agent" />
   </component>
 </project>
