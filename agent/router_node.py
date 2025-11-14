@@ -5,6 +5,7 @@ from llm.llm_provider import easy_llm
 from langchain.agents import create_agent,AgentState
 from langchain.agents.structured_output import ToolStrategy
 from langchain.agents.middleware import dynamic_prompt, ModelRequest
+from langchain_core.messages import HumanMessage, AIMessage
 
 class output_schema(BaseModel):
     intent: Literal["planner_node","qa_node"] = Field(
@@ -41,12 +42,17 @@ def router_node(state:State):
     """意图识别"""
     #state传过来一个字典
     question = state.get("question")
+    # message = state.get("messages", [])
     res = agent.invoke({
         "input": question,
         "question": question
     })
     intent_result = res['structured_response'].intent
     state["next_node"] = intent_result
+    # update_messages = message + [HumanMessage(content=question), AIMessage(content=intent_result)]
+    # state["messages"] = update_messages
+    state["messages"].append(HumanMessage(content=question))
+    state["messages"].append(AIMessage(content=intent_result))
     return state
 #
 # if __name__ == "__main__":
