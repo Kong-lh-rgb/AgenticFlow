@@ -61,7 +61,8 @@ def clean_text(text: str) -> str:
 
 
 
-def search_tool(state:State):
+def search_node(state:State):
+    """搜索资料清洗数据"""
     tavily_client = TavilyClient(
         api_key=os.getenv('TAVILY_API_KEY')
     )

@@ -9,5 +9,6 @@ class State(TypedDict):
     review: str #修改意见
     is_final: bool  #是否为最终稿
     count: int #记录写作次数
+    next_node:str #router识别后的下一个结点
 
 

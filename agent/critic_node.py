@@ -7,4 +7,4 @@ def review_node(state:State):
     draft = state["draft"]
     #传给大模型提出修改意见,如果大模型觉得没有问题，把is_final设为True,否在设为False
     review_notes = ["修改意见1","修改意见2"]
-    return {"review_notes":review_notes}
+    return {"review":review_notes}
