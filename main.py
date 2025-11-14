@@ -64,21 +64,4 @@ builder.add_conditional_edges(
 
 app = builder.compile()
 
-if __name__ == "__main__":
-    # 定义初始输入
-    initial_input = {
-        "topic": "AI Agent",
-        "draft": "",
-        "content": "这是一份关于AI Agent的资料...",
-        "review_notes": [],
-        "is_final": False,
-    }
-
-    # .stream() 可以让你看到每一步的状态变化
-    for step in app.stream(initial_input, {"recursion_limit": 5}):
-        node_name = list(step.keys())[0]
-        node_output = list(step.values())[0]
-        print(f"节点: {node_name}")
-        print(f"输出: {node_output}")
-        print("-" * 30)
 
