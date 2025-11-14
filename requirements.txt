@@ -1,0 +1,11 @@
+chardet==5.2.0
+langchain==1.0.5
+langchain_community==0.4.1
+langchain_core==1.0.4
+langchain_openai==1.0.2
+langchain_text_splitters==1.0.0
+langgraph==1.0.3
+pycparser==2.23
+python-dotenv==1.2.1
+tavily==1.1.0
+typing_extensions==4.15.0
