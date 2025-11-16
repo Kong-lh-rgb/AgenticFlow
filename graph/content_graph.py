@@ -12,4 +12,8 @@ class State(AgentState):
     count: int #记录写作次数
     next_node:str #router识别后的下一个结点
     question: str #用户的输入
+    need_ask: bool #是否需要反问用户
+    user_info:list[str] #记录需要用户补充的信息
+    ask_message:str
+    need_info:list[str] #用户补充的条件
 

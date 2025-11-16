@@ -66,7 +66,7 @@ def search_node(state:State):
     tavily_client = TavilyClient(
         api_key=os.getenv('TAVILY_API_KEY')
     )
-    query = state["topic"]
+    query = state.get("question")
     response = tavily_client.search(
         query = query,
         max_results=2,

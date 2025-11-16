@@ -18,16 +18,25 @@ def prompt(request:ModelRequest):
     question = request.state.get("question")
     #增强意图识别的方法：强化提示词，few-shot学习，微调模型，结构化输出
     return (
-        f"""你是一个意图识别助手，负责分析用户的输入{question}并识别其意图。
-        如果用户的输入涉及到任务的规划、或需要制定计划，输出 'planner_node'
-        如果用户的输入是一个具体的问题，期望得到直接的答案，输出 'qa_node'
-        示例：
-        用户: 帮我制定一个学习计划
-        意图: planner_node
-        用户: 地球到月球的距离是多少？
-        意图: qa_node
-        输出结果，不要多余文字
-        请仅返回意图，不要添加任何额外的信息。"""
+        f"""
+            你是一个意图识别助手，需要根据用户输入判断这是哪种类型的任务。
+            
+            【任务类型定义】
+            1. planner_node：用户的输入表示需要“生成内容、写报告、写文章、写总结、生成方案、制定计划、撰写文档”等复杂任务，需要多步骤推理。
+            2. qa_node：用户在询问一个具体事实、知识点、数据或者需要直接回答的问题。
+            
+            【分类逻辑】
+            - 只要用户的输入包含 “帮我写… / 帮我生成… / 写一个… / 做一份报告… / 总结一下…” → 必须归为 planner_node
+            - 用户问“是什么 / 为什么 / 多高 / 多远 / 怎么办 / 为什么会这样” → 属于 qa_node
+            
+            【用户输入】
+            {question}
+            
+            请严格输出以下两者之一：
+            "planner_node" 或 "qa_node"
+            
+            不要输出任何多余内容。
+            """
     )
 
 agent = create_agent(
@@ -51,8 +60,10 @@ def router_node(state:State):
     state["next_node"] = intent_result
     # update_messages = message + [HumanMessage(content=question), AIMessage(content=intent_result)]
     # state["messages"] = update_messages
-    state["messages"].append(HumanMessage(content=question))
-    state["messages"].append(AIMessage(content=intent_result))
+    messages = state.get("messages", [])
+    messages.append(HumanMessage(content=question))
+    messages.append(AIMessage(content=intent_result))
+    state["messages"] = messages
     return state
 #
 # if __name__ == "__main__":
