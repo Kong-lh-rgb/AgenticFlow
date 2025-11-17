@@ -1,43 +1,74 @@
-
 from typing import List
 from graph.content_graph import State
 from llm.llm_provider import easy_llm
 from langchain.agents import create_agent
 from langchain.agents.middleware import dynamic_prompt, ModelRequest
 from pydantic import BaseModel
-
-
+from typing import Optional
 
 class MissingField(BaseModel):
     field:str
-    ask:str
-    answer:str | None = None
+    question:str
+
 
 class PlannerOutput(BaseModel):
-    missing: List[MissingField]
+    need_ask:bool
+    missing: Optional[MissingField] = None
 
 
 @dynamic_prompt
 def prompt(request:ModelRequest):
-    question = request.state.get("question")
-    return (
-        f"""你是一个聪明的写报告的助理，你接受用户的问题：{question},
-        你的任务是判断用户提供的信息是否足够写出一份合适的报告。
-        如果不足请列出所有缺失字段，并且为每个字段提供一个自然的提问语句，
-        字段名要简洁明了，提问语句要通顺自然。
-        比如"length", "audience", "style", "topic"。
-        最后必须按照JSON格式输出missing列表。
-        请严格输出如下 JSON 结构：
-        {{
-          "missing": [
-            {{"field": "...", "ask": "..."，"answer",None}},
-            ...
-          ]
-        }}
-        不要输出任何解释，不要输出额外文字。"""
-    )
+    task = request.state.get("task")#获取当前任务
+    context = request.state.get("context",{})#获取完成当前任务要用到的信息
+    return f"""
+    你是一个经验丰富的信息规划智能体（Dynamic Planner Agent）。
 
-agent = create_agent(
+    你的任务是：
+    根据用户的原始任务（task）和已经收集到的信息（context），
+    判断当前是否需要向用户提一个关键问题，以便最终完成任务。
+    ------------------------
+    【任务说明】
+    {task}
+
+    【当前已知信息 context】
+    {context}
+    ------------------------
+    【你的工作流程】
+    1. 分析 task，判断task描述是否具备写一篇报告足够的信息，若不足则分析完成该任务所需要的关键参数有哪些。
+    2. 检查哪些参数已经在 context 中被填充。
+    3. 如果所有关键参数都已具备，则输出：
+       {{
+         "need_ask": false,
+         "missing": null
+       }}
+
+    4. 如果缺少关键信息，只选择“当前最重要的那一项”提出问题，输出：
+       {{
+         "need_ask": true,
+         "missing": {{
+            "field": "缺少的字段名（英文简短）",
+            "question": "向用户提问的自然语言问题"
+         }}
+       }}
+
+    5. 绝对不要列出多个字段，一次只问一个关键字段。
+
+    ------------------------
+    【输出要求（非常重要）】
+    - 必须严格输出 JSON
+    - 必须符合如下结构：
+      {{
+        "need_ask": <true|false>,
+        "missing": {{
+            "field": "<str>",
+            "question": "<str>"
+        }} | null
+      }}
+    - 不要输出额外解释内容
+    开始分析并输出 JSON：
+    """
+
+planner_agent = create_agent(
     model = easy_llm,
     tools = [],
     middleware = [prompt],
@@ -45,18 +76,27 @@ agent = create_agent(
     response_format=PlannerOutput
 )
 
-def planner_node(state:State):
-    """当前节点识别用户提问中缺少的信息并放到state里"""
-    question = state.get("question")
-    res = agent.invoke({
-        "input": question,
-        "question": question
+def planner_node(state: State):
+    task = state["task"]
+    context = state.get("context", {})
+    messages = state.get("messages", [])
+    res = planner_agent.invoke({
+        "task": task,
+        "context": context,
+        "messages": messages
     })
-    missing_list = res['structured_response'].missing
-    state["user_info"] = [item.model_dump() for item in missing_list]
-    if len(missing_list) > 0:
-        state["need_ask"] = True
+
+    out: PlannerOutput = res["structured_response"]
+
+    state["need_ask"] = out.need_ask
+    state["missing"] = out.missing.model_dump() if out.missing else None
+
+    # 如果需要问问题 → 跳到 ask_node.py
+    if out.need_ask:
+        state["next_node"] = "ask_node"
     else:
-        state["need_ask"] = False
-    state["next_node"] = "ask_user" if state["need_ask"] else "research_node"
+        state["next_node"] = "research_node"
+
     return state
+
+

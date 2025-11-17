@@ -62,21 +62,22 @@ def clean_text(text: str) -> str:
 
 
 def search_node(state:State):
-    """搜索资料清洗数据"""
-    tavily_client = TavilyClient(
-        api_key=os.getenv('TAVILY_API_KEY')
-    )
-    query = state.get("question")
-    response = tavily_client.search(
-        query = query,
-        max_results=2,
-        include_raw_content=True,
-    )
-    results = []
-    for item in response["results"]:
-        raw = item.get("raw_content", "")
-        cleaned = clean_text(raw)
-        results.append(cleaned)
-    state["research_findings"] = "\n\n".join(results)
-    return state["research_findings"]
+    # """搜索资料清洗数据"""
+    # tavily_client = TavilyClient(
+    #     api_key=os.getenv('TAVILY_API_KEY')
+    # )
+    # query = state.get("question")
+    # response = tavily_client.search(
+    #     query = query,
+    #     max_results=2,
+    #     include_raw_content=True,
+    # )
+    # results = []
+    # for item in response["results"]:
+    #     raw = item.get("raw_content", "")
+    #     cleaned = clean_text(raw)
+    #     results.append(cleaned)
+    # state["research_findings"] = "\n\n".join(results)
+    # return state["research_findings"]
+    print(state)
 

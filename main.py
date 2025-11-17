@@ -9,9 +9,9 @@ from agent.planner_node import planner_node
 from agent.router_node import router_node
 from agent.qa_node import qa_node
 from langgraph.checkpoint.memory import InMemorySaver
-from agent.ask_user import ask_node
-from agent.user_identify_node import user_identify_node
-from agent.fill_user_info import fill_user_info_node
+from agent.ask_node import ask_node
+from agent.fill_node import fill_node
+from agent.validator_node import validator_node
 
 def router(state:State):
     """路由节点，决定下一步走向"""
@@ -25,8 +25,8 @@ def router_after_planner(state:State):
     next_node = state.get("next_node")
     if next_node == "research_node":
         return "research_node"
-    elif next_node == "ask_user":
-        return "ask_user"
+    elif next_node == "ask_node":
+        return "ask_node"
 
 def route_function(state:State):
     """判断下一步是写作还是审查"""
@@ -35,12 +35,26 @@ def route_function(state:State):
         return "over"
     if not is_final:
         return "re_write"
+
+def router_after_fii(state:State):
+    next_node = state.get("next_node")
+    if next_node == "fill_node":
+        return "fill_node"
+    else:
+        return "validator_node"
+
+def router_after_validator(state:State):
+    next_node = state.get("next_node")
+    if next_node == "ask_node":
+        return "ask_node"
+    elif next_node == "research_node":
+        return "research_node"
 #构建图
 builder = StateGraph(State)
 builder.add_node("router",router_node)
 builder.add_node("ask",ask_node)
-builder.add_node("fill",fill_user_info_node)
-builder.add_node("user",user_identify_node)
+builder.add_node("fill",fill_node)
+builder.add_node("validator",validator_node)
 builder.add_node("writer",writen_node)
 builder.add_node("researcher",search_node)
 builder.add_node("indexer",put_in_db)
@@ -53,7 +67,7 @@ builder.add_edge(START,"router")
 # builder.add_edge("planner","ask")
 
 builder.add_edge("ask","fill")
-# builder.add_edge("user","planner")
+# builder.add_edge("fill","validator")
 
 builder.add_edge("researcher","indexer")
 builder.add_edge("indexer","retriever")
@@ -77,17 +91,27 @@ builder.add_conditional_edges(
     router_after_planner,
     {
         "research_node":"researcher",
-        "ask_user":"ask"
+        "ask_node":"ask"
     }
 )
 
-# builder.add_conditional_edges(
-#     "ask",
-#     lambda s: s.get("next_node"),
-#     {
-#         "user": "user"
-#     }
-# )
+builder.add_conditional_edges(
+    "fill",
+    router_after_fii,
+    {
+        "fill_node":"fill",
+        "validator_node":"validator"
+    }
+)
+
+builder.add_conditional_edges(
+    "validator",
+    router_after_validator,
+    {
+        "ask_node": "ask",
+        "research_node":"researcher"
+    }
+)
 
 builder.add_conditional_edges(
     "reviewer",

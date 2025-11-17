@@ -55,8 +55,6 @@ def interactive():
 
 
 if __name__ == "__main__":
-    interactive()
+    while True:
+        interactive()
 
-
-if __name__ == "__main__":
-    interactive()
