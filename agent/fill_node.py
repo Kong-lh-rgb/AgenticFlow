@@ -236,10 +236,12 @@ def fill_node(state: State):
         bot_response = out.reply
         update_messages.append(HumanMessage(user_reply))
         update_messages.append(AIMessage(bot_response))
+        print("12", state)
         new_reply = interrupt(bot_response)
+        print("13",state)
         state["user_reply"] = new_reply
-        state["next_node"] = "fill_node"
         state["messages"] = update_messages
+        print("14", state)
         # 不修改 next_node，让图重新回到 fill_node，根据新的 user_reply 再跑一轮
         return state
 
