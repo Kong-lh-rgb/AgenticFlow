@@ -15,5 +15,4 @@ class State(AgentState):
     need_ask: bool #是否需要反问用户
     user_info:list[str] #记录需要用户补充的信息
     ask_message:str
-    need_info:list[str] #用户补充的条件
-
+    user_reply:str #用户的回复

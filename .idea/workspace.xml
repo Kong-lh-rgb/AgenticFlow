@@ -99,7 +99,8 @@
       <workItem from="1763107533747" duration="8472000" />
       <workItem from="1763130228827" duration="676000" />
       <workItem from="1763197762444" duration="338000" />
-      <workItem from="1763290194634" duration="20271000" />
+      <workItem from="1763290194634" duration="20680000" />
+      <workItem from="1763345511386" duration="6111000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -221,7 +222,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763116053351</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="人机交互：bug">
+      <option name="closed" value="true" />
+      <created>1763311649024</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1763311649024</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -246,13 +255,14 @@
     <MESSAGE value="意图识别结点的实现" />
     <MESSAGE value="消息队列的更新" />
     <MESSAGE value="修改" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改" />
+    <MESSAGE value="人机交互：bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="人机交互：bug" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/AgenticFlow$content_graph.coverage" NAME="content_graph Coverage Results" MODIFIED="1762757703280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/graph" />
     <SUITE FILE_PATH="coverage/AgenticFlow$search_tool.coverage" NAME="search_tool Coverage Results" MODIFIED="1762762618150" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tools" />
     <SUITE FILE_PATH="coverage/AgenticFlow$test.coverage" NAME="test Coverage Results" MODIFIED="1763085178363" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/AgenticFlow$run_graph.coverage" NAME="run_graph Coverage Results" MODIFIED="1763311193019" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AgenticFlow$run_graph.coverage" NAME="run_graph Coverage Results" MODIFIED="1763350987761" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AgenticFlow$writen_node.coverage" NAME="writen_node Coverage Results" MODIFIED="1763078952031" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/agent" />
     <SUITE FILE_PATH="coverage/AgenticFlow$main.coverage" NAME="main Coverage Results" MODIFIED="1763305955277" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AgenticFlow$router_node.coverage" NAME="router_node Coverage Results" MODIFIED="1763114801134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/agent" />

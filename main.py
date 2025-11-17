@@ -11,6 +11,7 @@ from agent.qa_node import qa_node
 from langgraph.checkpoint.memory import InMemorySaver
 from agent.ask_user import ask_node
 from agent.user_identify_node import user_identify_node
+from agent.fill_user_info import fill_user_info_node
 
 def router(state:State):
     """路由节点，决定下一步走向"""
@@ -38,6 +39,7 @@ def route_function(state:State):
 builder = StateGraph(State)
 builder.add_node("router",router_node)
 builder.add_node("ask",ask_node)
+builder.add_node("fill",fill_user_info_node)
 builder.add_node("user",user_identify_node)
 builder.add_node("writer",writen_node)
 builder.add_node("researcher",search_node)
@@ -50,8 +52,9 @@ builder.add_node("qa",qa_node)
 builder.add_edge(START,"router")
 # builder.add_edge("planner","ask")
 
-builder.add_edge("ask","user")
-builder.add_edge("user","planner")
+builder.add_edge("ask","fill")
+# builder.add_edge("user","planner")
+
 builder.add_edge("researcher","indexer")
 builder.add_edge("indexer","retriever")
 builder.add_edge("retriever","writer")

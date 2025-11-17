@@ -61,25 +61,26 @@ agent = create_agent(
 )
 
 def user_identify_node(state:State):
-    # input = state["messages"][-1].content
-    res = agent.invoke({
-        # "input": input
-    })
-    # adding_list = res['structured_response'].adding
-    # state["need_info"] = [item.model_dump() for item in adding_list]
+    # # input = state["messages"][-1].content
+    # res = agent.invoke({
+    #     # "input": input
+    # })
+    # # adding_list = res['structured_response'].adding
+    # # state["need_info"] = [item.model_dump() for item in adding_list]
+    # # return state
+    # extracted_values = {item.field: item.value for item in res['structured_response'].adding}
+    #
+    # # 获取 planner 创建的原始 user_info 列表
+    # current_user_info = state.get("user_info", [])
+    #
+    # # 遍历列表，将提取到的值填充回去
+    # for item in current_user_info:
+    #     # 如果当前项的 'field' 在提取出的值中，并且它还没有 'value'
+    #     if item.get("field") in extracted_values and "value" not in item:
+    #         item["value"] = extracted_values[item.get("field")]
+    #
+    # # 将更新后的列表（现在包含 value）写回 state
+    # state["user_info"] = current_user_info
+    # state["next_node"] = "planner"
     # return state
-    extracted_values = {item.field: item.value for item in res['structured_response'].adding}
-
-    # 获取 planner 创建的原始 user_info 列表
-    current_user_info = state.get("user_info", [])
-
-    # 遍历列表，将提取到的值填充回去
-    for item in current_user_info:
-        # 如果当前项的 'field' 在提取出的值中，并且它还没有 'value'
-        if item.get("field") in extracted_values and "value" not in item:
-            item["value"] = extracted_values[item.get("field")]
-
-    # 将更新后的列表（现在包含 value）写回 state
-    state["user_info"] = current_user_info
-    state["next_node"] = "planner"
-    return state
+    pass

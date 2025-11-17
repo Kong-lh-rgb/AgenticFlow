@@ -11,6 +11,7 @@ from pydantic import BaseModel
 class MissingField(BaseModel):
     field:str
     ask:str
+    answer:str | None = None
 
 class PlannerOutput(BaseModel):
     missing: List[MissingField]
@@ -29,7 +30,7 @@ def prompt(request:ModelRequest):
         请严格输出如下 JSON 结构：
         {{
           "missing": [
-            {{"field": "...", "ask": "..."}},
+            {{"field": "...", "ask": "..."，"answer",None}},
             ...
           ]
         }}
