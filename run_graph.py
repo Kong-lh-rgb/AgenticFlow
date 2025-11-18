@@ -38,10 +38,10 @@ def interactive():
         # 如果图中有 interrupt
         if "__interrupt__" in state:
             interrupt_info = state["__interrupt__"][0]
-            print("\n🤖 机器人：")
+            print("\n 助手：")
             print(interrupt_info.value)
 
-            user_reply = input("\n用户补充： ")
+            user_reply = input("\n用户： ")
 
             # 恢复执行
             state = app.invoke(
@@ -49,7 +49,7 @@ def interactive():
                 config=config
             )
         else:
-            print("\n🎉 图执行完成：")
+            print("\n图执行完成：")
             print(state)
             break
 

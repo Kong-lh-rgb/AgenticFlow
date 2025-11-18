@@ -125,7 +125,7 @@ def fill_prompt(request: ModelRequest):
         1. 如果用户已经给出了这个字段的有效值，比如：
            - 问的是受众，用户说 "大学生"
            - 问的是长度，用户说 "1000 字左右"
-           → 则 mode = "filled"，value 里放提取到的值，reply 可以为 null。
+           → 则 mode = "filled"，value 里放提取到的值，reply 不可以为null，要回复用户。
         
         2. 如果用户是在反问、质疑、想要你解释，比如：
            - "为什么要告诉你这个？"
@@ -202,24 +202,30 @@ def fill_node(state: State):
     user_reply = state.get("user_reply")
     update_messages = state.get("messages")
     if not user_reply:
-        # 没有用户输入，直接交给 validator（或者返回 state 不动）
         state["next_node"] = "validator_node"
         return state
 
-    # 1. 调用 fill_agent，让模型判断当前属于哪种情况
+    # 1. 让模型判断当前属于哪种情况
+    print("11",state)
     result = fill_agent.invoke(state)
     out: FillOutput = result["structured_response"]
-    # ✅ 添加调试输出
-    print(f"\n🔍 fill_agent 判断:")
-    print(f"   mode: {out.mode}")
-    print(f"   value: {out.value}")
-    print(f"   reply: {out.reply}\n")
+    i = state.get("i", 1)
+
+    print(f"第{i}次 fill_node 执行")
+    i = i + 1
+    state["i"] = i
+    print(f"   判断: {out.mode}")
+    print(f"   填入: {out.value}")
+    print(f"   回复: {out.reply}\n")
     # 2. 三种分支逻辑
 
     # 2.1 用户给了有效值 → 填 context，继续 validator
     if out.mode == "filled" and out.value:
         context = state.get("context", {}) or {}
         context[field] = out.value
+        bot_response = out.reply
+        print(bot_response)
+        update_messages.append(AIMessage(bot_response))
         state["context"] = context
         update_messages.append(HumanMessage(user_reply))
         state["messages"] = update_messages
@@ -238,11 +244,13 @@ def fill_node(state: State):
         update_messages.append(AIMessage(bot_response))
         print("12", state)
         new_reply = interrupt(bot_response)
+        update_messages.append(HumanMessage(new_reply))
         print("13",state)
         state["user_reply"] = new_reply
         state["messages"] = update_messages
         print("14", state)
         # 不修改 next_node，让图重新回到 fill_node，根据新的 user_reply 再跑一轮
+        state["next_node"] = "fill_node"
         return state
 
     # 2.3 用户拒绝提供信息 → 视策略处理

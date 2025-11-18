@@ -3,7 +3,7 @@ from typing import Optional
 from langchain.agents.middleware import dynamic_prompt, ModelRequest
 from langchain.agents import create_agent
 from graph.content_graph import State
-from llm.llm_provider import easy_llm
+from llm.llm_provider import smart_llm
 
 class MissingField(BaseModel):
     field: str
@@ -84,7 +84,7 @@ def validator_prompt(request: ModelRequest):
         """
 
 validator_agent = create_agent(
-    model=easy_llm,
+    model=smart_llm,
     tools=[],
     middleware=[validator_prompt],
     state_schema=State,
