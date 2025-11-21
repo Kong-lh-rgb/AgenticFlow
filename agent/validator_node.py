@@ -31,12 +31,12 @@ def validator_prompt(request: ModelRequest):
         {context}
         -------------------------
         【关键规则】
-        ✅ **以下情况视为"字段已填充完毕",不要再次提问:**
+        **以下情况视为"字段已填充完毕",不要再次提问:**
         1. 字段有明确的有效值 (如 topic="ai", length="100字")
         2. 字段值是 "用户拒绝提供" → **这表示用户不想提供,必须跳过**
         3. 字段值是 null 或 None → **也表示已处理,不要再问**
         
-        ❌ **只有字段完全不存在于 context 中,才算缺失**
+        **只有字段完全不存在于 context 中,才算缺失**
         
         -------------------------
 
@@ -108,6 +108,6 @@ def validator_node(state: State):
     else:
         # 信息足够 → 可以写报告
         state["need_ask"] = False
-        state["next_node"] = "research_node"
+        state["next_node"] = "generate_query_node"
 
     return state

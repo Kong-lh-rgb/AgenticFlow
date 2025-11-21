@@ -13,4 +13,5 @@ class State(AgentState):
     next_node: Optional[str] = None
     user_reply: Optional[str] = None
     question: Optional[str] = None
+    query:List[str] = []
     i:int

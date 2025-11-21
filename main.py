@@ -12,6 +12,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 from agent.ask_node import ask_node
 from agent.fill_node import fill_node
 from agent.validator_node import validator_node
+from agent.generate_query import generate_query_node
 
 
 
@@ -49,14 +50,15 @@ def router_after_validator(state:State):
     next_node = state.get("next_node")
     if next_node == "ask_node":
         return "ask_node"
-    elif next_node == "research_node":
-        return "research_node"
+    elif next_node == "generate_query_node":
+        return "generate_query_node"
 #构建图
 builder = StateGraph(State)
 builder.add_node("router",router_node)
 builder.add_node("ask",ask_node)
 builder.add_node("fill",fill_node)
 builder.add_node("validator",validator_node)
+builder.add_node("generate_query",generate_query_node)
 builder.add_node("writer",writen_node)
 builder.add_node("researcher",search_node)
 builder.add_node("indexer",put_in_db)
@@ -70,7 +72,7 @@ builder.add_edge(START,"router")
 
 builder.add_edge("ask","fill")
 # builder.add_edge("fill","validator")
-
+builder.add_edge("generate_query","researcher")
 builder.add_edge("researcher","indexer")
 builder.add_edge("indexer","retriever")
 builder.add_edge("retriever","writer")
@@ -111,7 +113,7 @@ builder.add_conditional_edges(
     router_after_validator,
     {
         "ask_node": "ask",
-        "research_node":"researcher"
+        "generate_query_node":"generate_query"
     }
 )
 
