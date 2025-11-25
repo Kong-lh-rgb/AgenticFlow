@@ -2,8 +2,6 @@ from graph.content_graph import State
 from langgraph.graph import END,START,StateGraph
 from agent.writen_node import writen_node
 from agent.critic_node import review_node
-from agent.retriever_node import retriever_node
-from agent.indexing_node import put_in_db
 from agent.research_node import search_node
 from agent.planner_node import planner_node
 from agent.router_node import router_node
@@ -33,10 +31,10 @@ def router_after_planner(state:State):
 
 def route_function(state:State):
     """判断下一步是写作还是审查"""
-    is_final = state["is_final"]
-    if is_final:
+    next_node = state.get("next_node")
+    if next_node == "END":
         return "over"
-    if not is_final:
+    else:
         return "re_write"
 
 def router_after_fii(state:State):
@@ -61,9 +59,8 @@ builder.add_node("validator",validator_node)
 builder.add_node("generate_query",generate_query_node)
 builder.add_node("writer",writen_node)
 builder.add_node("researcher",search_node)
-builder.add_node("indexer",put_in_db)
+
 builder.add_node("planner",planner_node)
-builder.add_node("retriever",retriever_node)
 builder.add_node("reviewer",review_node)
 builder.add_node("qa",qa_node)
 
@@ -73,9 +70,7 @@ builder.add_edge(START,"router")
 builder.add_edge("ask","fill")
 # builder.add_edge("fill","validator")
 builder.add_edge("generate_query","researcher")
-builder.add_edge("researcher","indexer")
-builder.add_edge("indexer","retriever")
-builder.add_edge("retriever","writer")
+builder.add_edge("researcher","writer")
 builder.add_edge("writer","reviewer")
 builder.add_edge("qa",END)
 

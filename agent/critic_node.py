@@ -2,9 +2,11 @@
 from graph.content_graph import State
 def review_node(state:State):
     """审查结点"""
-    print("进入审查节点")
-    topic = state["topic"]
-    draft = state["draft"]
-    #传给大模型提出修改意见,如果大模型觉得没有问题，把is_final设为True,否在设为False
-    review_notes = ["修改意见1","修改意见2"]
-    return {"review":review_notes}
+    # print("进入审查节点")
+    # topic = state["topic"]
+    # draft = state["draft"]
+    # #传给大模型提出修改意见,如果大模型觉得没有问题，把is_final设为True,否在设为False
+    # review_notes = ["修改意见1","修改意见2"]
+    print(state)
+    state["next_node"] = "END"
+    return state

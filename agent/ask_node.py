@@ -67,5 +67,5 @@ def ask_node(state: State):
     user_reply = interrupt(ask_text)
     #中断后继续执行这个代码，判断用户输入的类型交给下一个代码
     state["user_reply"] = user_reply
-    print(state)
+
     return state

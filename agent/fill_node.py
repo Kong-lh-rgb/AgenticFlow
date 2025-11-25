@@ -206,14 +206,8 @@ def fill_node(state: State):
         return state
 
     # 1. 让模型判断当前属于哪种情况
-    print("11",state)
     result = fill_agent.invoke(state)
     out: FillOutput = result["structured_response"]
-    i = state.get("i", 1)
-
-    print(f"第{i}次 fill_node 执行")
-    i = i + 1
-    state["i"] = i
     print(f"   判断: {out.mode}")
     print(f"   填入: {out.value}")
     print(f"   回复: {out.reply}\n")
@@ -224,7 +218,6 @@ def fill_node(state: State):
         context = state.get("context", {}) or {}
         context[field] = out.value
         bot_response = out.reply
-        print(bot_response)
         update_messages.append(AIMessage(bot_response))
         state["context"] = context
         update_messages.append(HumanMessage(user_reply))
@@ -242,13 +235,10 @@ def fill_node(state: State):
         bot_response = out.reply
         update_messages.append(HumanMessage(user_reply))
         update_messages.append(AIMessage(bot_response))
-        print("12", state)
         new_reply = interrupt(bot_response)
         update_messages.append(HumanMessage(new_reply))
-        print("13",state)
         state["user_reply"] = new_reply
         state["messages"] = update_messages
-        print("14", state)
         # 不修改 next_node，让图重新回到 fill_node，根据新的 user_reply 再跑一轮
         state["next_node"] = "fill_node"
         return state
@@ -260,7 +250,6 @@ def fill_node(state: State):
         state["context"] = context
 
         info = out.reply
-        print(info)
         update_messages.append(HumanMessage(user_reply))
         update_messages.append(AIMessage(info))
 

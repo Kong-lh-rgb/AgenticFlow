@@ -14,4 +14,5 @@ class State(AgentState):
     user_reply: Optional[str] = None
     question: Optional[str] = None
     query:List[str] = []
-    i:int
+    research_findings: List[Dict[str, Any]] = []
+    final_report: Optional[str] = None
