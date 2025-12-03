@@ -35,7 +35,7 @@ def route_function(state:State):
     if next_node == "END":
         return "over"
     else:
-        return "re_write"
+        return "re_writer"
 
 def router_after_fii(state:State):
     next_node = state.get("next_node")
@@ -121,8 +121,14 @@ builder.add_conditional_edges(
     }
 )
 
-memory = InMemorySaver()
-app = builder.compile(checkpointer=memory)
+# memory = InMemorySaver()
+# app = builder.compile(checkpointer=memory)
 
 # app = builder.compile()
+import sqlite3
+from langgraph.checkpoint.sqlite import SqliteSaver
+
+conn = sqlite3.connect("agenticflow_ckpt.sqlite", check_same_thread=False)
+checkpointer = SqliteSaver(conn)
+app = builder.compile(checkpointer=checkpointer)
 

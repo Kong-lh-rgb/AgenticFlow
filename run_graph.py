@@ -1,6 +1,6 @@
 # run_graph.py
 from langgraph.types import Command, Interrupt
-from main import app
+from graph_runner import app
 
 # def interactive():
 #     config = {"configurable": {"thread_id": "1"}}
