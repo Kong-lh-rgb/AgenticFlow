@@ -13,6 +13,23 @@ app.include_router(sessions_router)
 app.include_router(chat_router)
 app.include_router(reports_router)
 
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:63342",
+        "http://127.0.0.1:63342",
+        "http://127.0.0.1:5173",
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 @app.get("/")
 def root():
     return {"ok": True, "msg": "AgenticFlow backend running (backend.main)"}

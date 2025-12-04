@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AgenticFlow Mini UI</title>
+  <style>
+    :root { --bg:#0b1020; --card:#101a33; --muted:#93a4c7; --text:#e8eeff; --line:#223055; --accent:#7c5cff; }
+    *{ box-sizing:border-box; }
+    body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+          background: radial-gradient(1200px 600px at 20% 10%, #17224a, transparent 60%),
+                      radial-gradient(1000px 500px at 90% 30%, #2a1b48, transparent 55%),
+                      var(--bg);
+          color:var(--text); }
+    .wrap{ max-width:1100px; margin:24px auto; padding:0 16px; display:grid; gap:16px; grid-template-columns: 360px 1fr; }
+    .card{ background: rgba(16,26,51,.85); border:1px solid rgba(34,48,85,.9); border-radius:18px; padding:16px; box-shadow: 0 10px 30px rgba(0,0,0,.25); backdrop-filter: blur(8px); }
+    h2{ margin:0 0 10px; font-size:16px; letter-spacing:.2px; }
+    label{ display:block; font-size:12px; color:var(--muted); margin:10px 0 6px; }
+    input, textarea{ width:100%; border-radius:12px; padding:10px 12px; border:1px solid rgba(34,48,85,.9);
+      background: rgba(7,12,26,.65); color:var(--text); outline:none; }
+    textarea{ min-height: 84px; resize: vertical; }
+    .row{ display:flex; gap:10px; flex-wrap: wrap; }
+    button{ border:0; border-radius:12px; padding:10px 12px; cursor:pointer; color:white;
+      background: linear-gradient(135deg, var(--accent), #21c7ff);
+      font-weight:600; }
+    button.secondary{ background: rgba(255,255,255,.08); border:1px solid rgba(34,48,85,.9); color:var(--text); }
+    button:disabled{ opacity:.55; cursor:not-allowed; }
+    .muted{ color:var(--muted); font-size:12px; }
+    .pill{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(34,48,85,.9); background: rgba(255,255,255,.06); font-size:12px; color:var(--muted); }
+    .chat{ display:flex; flex-direction:column; height: calc(100vh - 64px); min-height: 560px; }
+    .messages{ flex:1; overflow:auto; border:1px solid rgba(34,48,85,.9); border-radius:16px;
+      padding:12px; background: rgba(7,12,26,.45); }
+    .msg{ max-width: 80%; margin:10px 0; padding:10px 12px; border-radius:14px; border:1px solid rgba(34,48,85,.9); }
+    .me{ margin-left:auto; background: rgba(124,92,255,.18); }
+    .ai{ background: rgba(33,199,255,.10); }
+    .msg .meta{ font-size:11px; color:var(--muted); margin-bottom:6px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .msg .text{ white-space:pre-wrap; line-height:1.4; }
+    .composer{ margin-top:12px; display:flex; gap:10px; }
+    .composer textarea{ flex:1; min-height: 48px; max-height: 160px; }
+    .log{ margin-top:10px; font-size:12px; color:#ffb3b3; white-space:pre-wrap; }
+    .ok{ color:#bfffd1; }
+    .warn{ color:#ffe2a8; }
+    @media (max-width: 900px){ .wrap{ grid-template-columns: 1fr; } .chat{ height:auto; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h2>连接配置</h2>
+      <label>API Base（你的后端地址）</label>
+      <input id="apiBase" placeholder="http://127.0.0.1:8001" />
+      <div class="row" style="margin-top:10px">
+        <button class="secondary" id="saveBase">保存</button>
+        <span class="pill" id="tokenStat">未登录</span>
+        <span class="pill" id="runStat">run_id: -</span>
+      </div>
+
+      <hr style="border:0;border-top:1px solid rgba(34,48,85,.9);margin:14px 0">
+
+      <h2>注册 / 登录</h2>
+      <label>用户名</label>
+      <input id="username" placeholder="user_test02" />
+      <label>密码</label>
+      <input id="password" type="password" placeholder="至少6位" />
+      <div class="row" style="margin-top:10px">
+        <button id="btnRegister">注册</button>
+        <button id="btnLogin">登录</button>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <button class="secondary" id="btnLogout">退出登录</button>
+      </div>
+
+      <hr style="border:0;border-top:1px solid rgba(34,48,85,.9);margin:14px 0">
+
+      <h2>会话</h2>
+      <label>新建 Session 标题</label>
+      <input id="sessionTitle" placeholder="例如：写报告-测试" />
+      <div class="row" style="margin-top:10px">
+        <button id="btnCreateSession">创建 Session</button>
+      </div>
+
+      <label style="margin-top:12px">当前 session_id</label>
+      <input id="sessionId" placeholder="例如：3" />
+
+      <label style="margin-top:12px">当前 run_id（不填默认当前 active_run_id / 最新 run）</label>
+      <input id="runId" placeholder="例如：1" />
+
+      <div class="row" style="margin-top:10px">
+        <button class="secondary" id="btnLoadHistory">加载历史</button>
+        <button class="secondary" id="btnPing">连通测试</button>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <button class="secondary" id="btnNewRun">新报告（下一条消息开新 run）</button>
+        <span class="pill" id="newRunFlag">new_run: false</span>
+      </div>
+
+      <div class="log" id="log"></div>
+    </div>
+
+    <div class="card chat">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;">
+        <h2 style="margin:0">聊天</h2>
+        <span class="muted">提示：先登录 → 创建 session → 发送消息；要“新报告”点一次按钮。</span>
+      </div>
+
+      <div class="messages" id="messages"></div>
+
+      <div class="composer">
+        <textarea id="input" placeholder="输入消息..."></textarea>
+        <button id="btnSend">发送</button>
+      </div>
+
+      <div class="muted" style="margin-top:10px">
+        支持：interrupted(need_input)、run_id、report_id。若后端返回 report_content 会直接展示全文。
+      </div>
+    </div>
+  </div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  const store = {
+    get apiBase(){ return localStorage.getItem("af_api_base") || "http://127.0.0.1:8001"; },
+    set apiBase(v){ localStorage.setItem("af_api_base", v); },
+    get token(){ return localStorage.getItem("af_token") || ""; },
+    set token(v){ v ? localStorage.setItem("af_token", v) : localStorage.removeItem("af_token"); },
+  };
+
+  let currentRunId = null;  // 后端返回 run_id 后更新
+  let newRunNext = false;   // 点击“新报告”后，下一条消息带 new_run=true
+
+  function setLog(msg, cls=""){
+    $("log").className = "log " + (cls || "");
+    $("log").textContent = msg || "";
+  }
+  function setTokenStat(){
+    $("tokenStat").textContent = store.token ? "已登录" : "未登录";
+  }
+  function setRunStat(){
+    $("runStat").textContent = "run_id: " + (currentRunId ?? "-");
+  }
+  function setNewRunFlag(){
+    $("newRunFlag").textContent = "new_run: " + (newRunNext ? "true" : "false");
+  }
+
+  $("apiBase").value = store.apiBase;
+  setTokenStat();
+  setRunStat();
+  setNewRunFlag();
+
+  $("saveBase").onclick = () => {
+    store.apiBase = $("apiBase").value.trim() || "http://127.0.0.1:8001";
+    setLog("已保存 API Base", "ok");
+  };
+
+  async function api(path, { method="GET", headers={}, body=null, auth=true } = {}){
+    const url = store.apiBase.replace(/\/+$/,"") + path;
+    const h = { ...headers };
+    if (auth && store.token) h["Authorization"] = "Bearer " + store.token;
+
+    const res = await fetch(url, { method, headers: h, body });
+    const text = await res.text();
+    let data = null;
+    try { data = text ? JSON.parse(text) : null; } catch { data = text; }
+
+    if (!res.ok) {
+      const detail = (data && data.detail) ? data.detail : data;
+      throw new Error(`${res.status} ${res.statusText}\n${typeof detail === "string" ? detail : JSON.stringify(detail, null, 2)}`);
+    }
+    return data;
+  }
+
+  function addMsg(role, text, meta=""){
+    const div = document.createElement("div");
+    div.className = "msg " + (role === "user" ? "me" : "ai");
+    div.innerHTML = `
+      <div class="meta">
+        <span>${role === "user" ? "YOU" : "AI"}</span>
+        ${meta ? `<span class="pill">${meta}</span>` : ``}
+      </div>
+      <div class="text"></div>
+    `;
+    div.querySelector(".text").textContent = text;
+    $("messages").appendChild(div);
+    $("messages").scrollTop = $("messages").scrollHeight;
+  }
+
+  $("btnRegister").onclick = async () => {
+    setLog("");
+    try{
+      const username = $("username").value.trim();
+      const password = $("password").value;
+      const data = await api("/auth/register", {
+        method:"POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ username, password }),
+        auth: false
+      });
+      setLog("注册成功: " + JSON.stringify(data), "ok");
+    } catch(e){ setLog(e.message); }
+  };
+
+  $("btnLogin").onclick = async () => {
+    setLog("");
+    try{
+      const username = $("username").value.trim();
+      const password = $("password").value;
+
+      // /auth/login 若用 OAuth2PasswordRequestForm，需要 x-www-form-urlencoded
+      const form = new URLSearchParams();
+      form.set("username", username);
+      form.set("password", password);
+
+      const data = await api("/auth/login", {
+        method:"POST",
+        headers: {"Content-Type":"application/x-www-form-urlencoded"},
+        body: form.toString(),
+        auth: false
+      });
+
+      store.token = data.access_token;
+      setTokenStat();
+      setLog("登录成功", "ok");
+    } catch(e){ setLog(e.message); }
+  };
+
+  $("btnLogout").onclick = () => {
+    store.token = "";
+    setTokenStat();
+    setLog("已退出登录", "ok");
+  };
+
+  $("btnCreateSession").onclick = async () => {
+    setLog("");
+    try{
+      const title = $("sessionTitle").value.trim() || "new session";
+      const data = await api("/sessions/create", {
+        method:"POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ title })
+      });
+
+      // 兼容返回值：可能是 {session_id:...} 或直接数字/字符串
+      const sid = data.session_id ?? data.id ?? data;
+      $("sessionId").value = sid;
+
+      // 默认 run=1（多数实现都是这样），你也可以不填 runId 让后端用 active_run_id
+      currentRunId = 1;
+      $("runId").value = "1";
+      setRunStat();
+
+      setLog("Session 创建成功: " + sid, "ok");
+    } catch(e){ setLog(e.message); }
+  };
+
+  $("btnLoadHistory").onclick = async () => {
+    setLog("");
+    try{
+      const session_id = Number($("sessionId").value);
+      if (!session_id) throw new Error("请先填 session_id");
+
+      const run_id_raw = $("runId").value.trim();
+      const qs = new URLSearchParams();
+      qs.set("session_id", String(session_id));
+      qs.set("limit", "200");
+      if (run_id_raw) qs.set("run_id", run_id_raw);
+
+      const list = await api(`/chat/history?${qs.toString()}`);
+      $("messages").innerHTML = "";
+      for (const m of list){
+        addMsg(m.role === "user" ? "user" : "assistant", m.content, m.created_at ? new Date(m.created_at).toLocaleString() : "");
+      }
+
+      if (run_id_raw) {
+        currentRunId = Number(run_id_raw);
+        setRunStat();
+      }
+
+      setLog("历史加载完成", "ok");
+    } catch(e){ setLog(e.message); }
+  };
+
+  $("btnPing").onclick = async () => {
+    setLog("");
+    try{
+      const data = await api("/", { auth:false });
+      setLog("后端 OK: " + JSON.stringify(data), "ok");
+    } catch(e){ setLog(e.message); }
+  };
+
+  $("btnNewRun").onclick = () => {
+    newRunNext = true;
+    setNewRunFlag();
+    setLog("下一条消息将开启新 run（new_run=true）", "warn");
+  };
+
+  $("btnSend").onclick = async () => {
+    setLog("");
+    try {
+      const session_id = Number($("sessionId").value);
+      const content = $("input").value.trim();
+      if (!session_id) throw new Error("请先填 session_id（或先创建 session）");
+      if (!content) return;
+
+      addMsg("user", content);
+      $("input").value = "";
+      $("btnSend").disabled = true;
+
+      const payload = { session_id, content, new_run: newRunNext };
+
+      // 如果你后端支持“指定 run_id”发送（可选），就保留这段；不支持就删掉这 3 行
+      // const run_id_input = $("runId").value.trim();
+      // if (run_id_input) payload.run_id = Number(run_id_input);
+
+      const resp = await api("/chat/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      // 用完就复位（否则会每条都开新 run）
+      newRunNext = false;
+      setNewRunFlag();
+
+      // 更新 run_id（如果后端返回）
+      if (resp.run_id != null) {
+        currentRunId = resp.run_id;
+        $("runId").value = String(resp.run_id);
+        setRunStat();
+      }
+
+      let assistantText = resp.assistant_message || "(empty)";
+
+      // 后端直接回报告全文就直接展示
+      if (resp.report_content) assistantText = resp.report_content;
+
+      // 如果只有 report_id，没有 report_content，则尝试再拉一次全文（需要你后端有 /reports/{id}）
+      if (!resp.report_content && resp.report_id) {
+        try {
+          const rep = await api(`/reports/${resp.report_id}`);
+          if (rep && rep.content) assistantText = rep.content;
+        } catch(_) {
+          // 没这个接口也没关系，就展示 assistant_message
+        }
+      }
+
+      const metaParts = [];
+      if (resp.interrupted) metaParts.push("need_input");
+      if (resp.run_id != null) metaParts.push(`run_id=${resp.run_id}`);
+      if (resp.report_id) metaParts.push(`report_id=${resp.report_id}`);
+      const meta = metaParts.join(" · ");
+
+      addMsg("assistant", assistantText, meta);
+
+      // 如果刚刚生成了 report_id，给个小提示（可选）
+      if (resp.report_id && !resp.report_content) {
+        setLog("已生成 report_id=" + resp.report_id + "（如需自动展示全文，请让后端返回 report_content 或提供 /reports/{id}）", "ok");
+      }
+
+    } catch (e) {
+      setLog(e.message || String(e));
+    } finally {
+      $("btnSend").disabled = false;
+    }
+  };
+
+  // Enter 发送（Shift+Enter 换行）
+  $("input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey){
+      e.preventDefault();
+      $("btnSend").click();
+    }
+  });
+</script>
+</body>
+</html>

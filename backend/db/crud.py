@@ -23,15 +23,15 @@ def create_session(db: Session, user_id: int, title: str | None = None):
     db.refresh(s)
     return s
 
-def add_message(db: Session, session_id: int, role: str, content: str):
-    m = Message(session_id=session_id, role=role, content=content)
+def add_message(db: Session, session_id: int, role: str, run_id: int,content: str):
+    m = Message(session_id=session_id, role=role,  run_id=run_id, content=content)
     db.add(m)
     db.commit()
     db.refresh(m)
     return m
 
-def list_messages(db: Session, session_id: int, limit: int = 50):
-    stmt = select(Message).where(Message.session_id == session_id).order_by(Message.id.desc()).limit(limit)
+def list_messages(db: Session, session_id: int,run_id: int, limit: int = 50):
+    stmt = select(Message).where(Message.session_id == session_id, Message.run_id == run_id).order_by(Message.id.desc()).limit(limit)
     rows = db.scalars(stmt).all()
     return list(reversed(rows))
 
@@ -54,4 +54,11 @@ from backend.db.models import Session as ChatSession
 
 def get_session_by_id(db, session_id: int):
     return db.scalar(select(ChatSession).where(ChatSession.id == session_id))
+
+def bump_run(db: Session, session_obj):
+    session_obj.active_run_id += 1
+    session_obj.status = "active"
+    db.commit()
+    db.refresh(session_obj)
+    return session_obj.active_run_id
 
